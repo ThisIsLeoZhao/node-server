@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <%- include('./partials/header'); %>
+    <%- include('./partials/notification'); %>
+
+
+    <% if (locals.user) { %>
+        <form method="post" action="/post" class="well form-inline center" style="text-align: center;">
+            <input type="text" class="span8" name="post">
+            <button type="submit" class="btn btn-success">Post</button>
+        </form>
+    <% } else { %>
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">Welcome to Weibo</h1>
+                <p>This is a microblog system based on Node.js</p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/login" role="button">Login</a>
+                    <a class="btn btn-secondary btn-lg" href="/register" role="button">Register now >></a>
+                </p>
+            </div>
+        </div>
+    <% } %>
+
+    <!--Posts-->
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+            <% if (locals.posts) { %> 
+                <% locals.posts.forEach(function (post) { %>
+                    <div class="col-md-4">
+                        <h2><a href="/u/<%= post.username %>"><%= post.username %></a> say</h2>
+                        <p><small><%= post.time %></small></p>
+                        <p><%= post.content %></p>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No post found</p>
+            <% } %>
+        </div>
+
+        <%- include('./partials/footer.ejs'); %>
+    </div>
+    <!-- /container -->
+
+</body>
+
+</html>
