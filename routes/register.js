@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Register page
 router.get('/', function (req, res, next) {
-    res.sendFile('register.html', {root: './weibo/views'});
+    res.sendFile('auth.html', {root: './weibo/views'});
 });
 
 // Post register request

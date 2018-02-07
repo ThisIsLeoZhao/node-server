@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Get login page
 router.get('/', function (req, res) {
-    res.sendFile('login.html', {root: './weibo/views'});
+    res.sendFile('auth.html', {root: './weibo/views'});
 });
 
 // Post login request
