@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 
