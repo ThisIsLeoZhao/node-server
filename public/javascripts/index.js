@@ -1,10 +1,11 @@
 const host = 'http://localhost:3000/';
+let pagePosts = [];
 
 $(document).ready(function () {
     $('#postSection').hide();
     $('#loginSection').hide();
     
-    const token = window.localStorage.getItem('loginToken');
+    const token = window.localStorage.getItem('authToken');
     if (token) {
         $('#postSection').show();
     } else {
@@ -45,28 +46,52 @@ $(document).ready(function () {
             'x-access-token': token
         }
     }).done(function (response) {
-        populatePosts(JSON.parse(response).posts);
+        pagePosts = JSON.parse(response).posts ? JSON.parse(response).posts : [];
+        populatePosts(pagePosts);
     }).fail(function (err) {
         console.error(err);
     });
 });
 
+
+
 function populatePosts(posts) {
     const postContainer = $('.container .row');
+    postContainer.empty();
+
     for (let i = 0; i < posts.length; i++) {
         const post = posts[i];
 
         const postElement = $('<div>', {class: 'col-md-4'});
-        const head = $('<h2><a href=/u/' + post.username + '></a> say</h2>');
+        const head = $('<h2><a href=/u/' + post.username + '>' + post.username + '</a> say</h2>');
         const time = $('<p><small>' + post.time + '</small></p>');
         const content = $('<p>' + post.content + '</p>');
         postElement.prepend(head, time, content);
         postContainer.prepend(postElement);
     }
 
+    postContainer.find('a').click(function (event) {
+        const target = event.target;
+        console.log(target + ' clicked');
+        if (target.href && event.button == 0 && target.origin == window.location.origin) {
+            history.pushState(null, '', target.pathname);
+
+            const username = target.innerHTML;
+            filterPosts(username);
+
+            event.preventDefault();
+        }
+    });
+
     if (postContainer.html() === '') {
         postContainer.prepend('<p>No post found</p>');
     }
+}
+
+function filterPosts(username) {
+    populatePosts(pagePosts.filter(function (post) {
+        return post.username === username;
+    }));
 }
 
 function flashMessage(element, message, duration) {
@@ -76,4 +101,9 @@ function flashMessage(element, message, duration) {
         element.html('');
         element.addClass('hide');
     }, duration);
+}
+
+window.onpopstate = function (event) {
+    populatePosts(pagePosts);
+    event.preventDefault();
 }
