@@ -1,3 +1,5 @@
+/*global flashMessage*/
+
 $(document).ready(function () {
     const loginForm = $('#loginForm');
     const registerForm = $('#registerForm');
@@ -11,8 +13,8 @@ $(document).ready(function () {
     }
 
     loginForm.submit(function (event) {
-        const username = loginForm.find("input[name='username']").val();
-        const password = loginForm.find("input[name='password']").val();
+        const username = loginForm.find('input[name="username"]').val();
+        const password = loginForm.find('input[name="password"]').val();
 
         $.ajax({
             method: 'POST',
@@ -38,9 +40,9 @@ $(document).ready(function () {
     registerForm.submit(function (event) {
         event.preventDefault();
 
-        const username = registerForm.find("input[name='username']").val();
-        const password = registerForm.find("input[name='password']").val();
-        const repeatPassword = registerForm.find("input[name='repeat-password']").val();
+        const username = registerForm.find('input[name="username"]').val();
+        const password = registerForm.find('input[name="password"]').val();
+        const repeatPassword = registerForm.find('input[name="repeat-password"]').val();
 
         if (password != repeatPassword) {
             flashMessage($('#errorNotification'), 'Password is different with the repeat password', 2000);

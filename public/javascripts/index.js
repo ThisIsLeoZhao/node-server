@@ -1,3 +1,5 @@
+/*global flashMessage*/
+
 const host = 'http://localhost:3000';
 let pagePosts = [];
 
@@ -98,4 +100,4 @@ function filterPosts(username) {
 window.onpopstate = function (event) {
     populatePosts(pagePosts);
     event.preventDefault();
-}
+};
