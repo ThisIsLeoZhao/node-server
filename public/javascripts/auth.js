@@ -11,8 +11,8 @@ $(document).ready(function () {
     }
 
     loginForm.submit(function (event) {
-        const username = loginForm("input[name='username']").val();
-        const password = loginForm("input[name='password']").val();
+        const username = loginForm.find("input[name='username']").val();
+        const password = loginForm.find("input[name='password']").val();
 
         $.ajax({
             method: 'POST',
@@ -24,7 +24,7 @@ $(document).ready(function () {
             if (responseJson.auth) {
                 flashMessage($('#successNotification'), responseJson.message, 2000);
                 window.localStorage.setItem('authToken', responseJson.token);
-                window.location.replace('http://localhost:3000/index.html');
+                window.location.replace('http://localhost:3000');
             } else {
                 flashMessage($('#errorNotification'), responseJson.message ? responseJson.message : 'Login error', 2000);
             }
@@ -57,7 +57,7 @@ $(document).ready(function () {
             if (responseJson.auth) {
                 flashMessage($('#successNotification'), responseJson.message, 2000);
                 window.localStorage.setItem('authToken', responseJson.token);
-                window.location.replace('http://localhost:3000/index.html');
+                window.location.replace('http://localhost:3000');
             } else {
                 flashMessage($('#errorNotification'), responseJson.message ? responseJson.message : 'Register error', 2000);
             }

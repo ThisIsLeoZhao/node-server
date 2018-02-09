@@ -7,6 +7,7 @@ const post = require('./post.js');
 const register = require('./register.js');
 const users = require('./users.js');
 const auth = require('../auth/auth.js');
+const posts = require('./posts.js');
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.use('/logout', logout);
 router.use('/post', post);
 router.use('/register', register);
 router.use('/u', users);
+router.use('/posts', posts);
 
 function checkNotLogin(req, res, next) {
     auth.verifyToken(req, res, function (result) {

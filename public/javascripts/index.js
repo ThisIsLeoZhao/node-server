@@ -1,4 +1,4 @@
-const host = 'http://localhost:3000/';
+const host = 'http://localhost:3000';
 let pagePosts = [];
 
 $(document).ready(function () {
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     $.ajax({
         method: 'GET',
-        url: host,
+        url: host + '/posts',
         cache: false,
         headers: {
             'x-access-token': token
