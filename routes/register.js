@@ -14,9 +14,9 @@ router.post('/', function (req, res, next) {
     auth.registerUser(new User({
         username: req.body.username,
         password: req.body.password
-    }), function (authToken) {
+    })).then(function (authToken) {
         res.send(JSON.stringify({auth: true, token: authToken, message: 'Register succeed'}));
-    }, function (err) {
+    }).catch(function (err) {
         res.send(JSON.stringify({auth: false, message: err}));
     });
 });

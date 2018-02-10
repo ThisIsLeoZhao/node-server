@@ -4,44 +4,42 @@ const User = require('../models/user.js');
 const settings = require('../models/settings.js');
 
 module.exports = {
-    registerUser: function (user, onRegister, onError) {
+    registerUser: function (user) {
         user.password = bcrypt.hashSync(user.password, 8);
 
-        User.findOne({ username: user.username }, function (err, foundUser) {
+        return User.findOne({ username: user.username }).then(function (foundUser) {
             if (foundUser) {
-                onError('User already exists');
-            } else {
-                user.save(function (err, user) {
-                    if (err) {
-                        onError(err);
-                    }
-
-                    const token = jwt.sign({ id: user.username }, settings.secret, {
-                        expiresIn: 60
-                    });
-                    onRegister(token);
-                });
+                throw 'User already exists';
             }
+            user.save().then(function (user) {
+                const token = jwt.sign({ id: user.username }, settings.secret, {
+                    expiresIn: 60
+                });
+                return token;
+            }).catch(function (err) {
+                throw err;
+            });
+
+        }).catch(function (err) {
+            throw err;
         });
     },
 
-    loginUser: function (user, onLogin, onError) {
-        User.findOne({ username: user.username }, function (err, foundUser) {
-            if (err) {
-                onError(err);
-            }
-
+    loginUser: function (user) {
+        return User.findOne({ username: user.username }).then(function (foundUser) {
             if (!foundUser) {
-                onError('User does not exist');
+                throw 'User does not exist';
             } else if (!bcrypt.compareSync(user.password, foundUser.password)) {
-                onError('Password does not match');
+                throw 'Password does not match';
             } else {
                 const token = jwt.sign({ id: foundUser.username }, settings.secret, {
                     expiresIn: 60
                 });
 
-                onLogin(token);
+                return token;
             }
+        }).catch(function (err) {
+            throw err;
         });
     },
 
@@ -52,19 +50,18 @@ module.exports = {
 
         jwt.verify(token, settings.secret, function (err, decoded) {
             if (err) {
-                return next({tokenValid: false, err: err.message});
+                return next({ tokenValid: false, err: err.message });
             }
 
-            User.findOne({ username: decoded.id }, function (err, user) {
-                if (err) {
-                    return next({tokenValid: false, err: err});
-                }
+            User.findOne({ username: decoded.id }).then(function (user) {
                 if (!user) {
-                    return next({tokenValid: false, err: 'User does not exist'});
+                    throw 'User does not exist';
                 }
 
                 req.username = decoded.id;
-                next({tokenValid: true});
+                next({ tokenValid: true });
+            }).catch(function (err) {
+                next({tokenValid: false, err: err});
             });
         });
     }

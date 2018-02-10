@@ -55,8 +55,6 @@ $(document).ready(function () {
     });
 });
 
-
-
 function populatePosts(posts) {
     const postContainer = $('.container .row');
     postContainer.empty();

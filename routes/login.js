@@ -14,10 +14,10 @@ router.post('/', function (req, res) {
     auth.loginUser(new User({
         username: req.body.username,
         password: req.body.password
-    }), function (authToken) {
+    })).then(function (authToken) {
         res.send(JSON.stringify({auth: true, token: authToken, message: 'Login succeed'}));
-    }, function (err) {
-        res.send(JSON.stringify({auth: false, message: err}));
+    }).catch(function (err) {
+        res.send(JSON.stringify({auth: false, message: err || err.message}));
     });
 });
 
