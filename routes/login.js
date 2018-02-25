@@ -17,7 +17,7 @@ router.post('/', function (req, res) {
     })).then(function (authToken) {
         res.send(JSON.stringify({auth: true, token: authToken, message: 'Login succeed'}));
     }).catch(function (err) {
-        res.send(JSON.stringify({auth: false, message: err || err.message}));
+        res.status(401).send(JSON.stringify({auth: false, message: err || err.message}));
     });
 });
 

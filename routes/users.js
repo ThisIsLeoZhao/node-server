@@ -1,5 +1,4 @@
 const express = require('express');
-const Post = require('../models/post.js');
 const router = express.Router();
 
 // User homepage

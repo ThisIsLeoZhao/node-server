@@ -8,6 +8,7 @@ const register = require('./register.js');
 const users = require('./users.js');
 const auth = require('../auth/auth.js');
 const posts = require('./posts.js');
+const favorite = require('./favorite.js');
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.all('/register', checkNotLogin);
 router.all('/logout', checkLogin);
 router.all('/post', checkLogin);
 router.all('/u/*', checkLogin);
+// router.all('/favorite', checkLogin);
 
 router.use('/', index);
 router.use('/login', login);
@@ -24,6 +26,7 @@ router.use('/post', post);
 router.use('/register', register);
 router.use('/u', users);
 router.use('/posts', posts);
+router.use('/favorite', favorite);
 
 function checkNotLogin(req, res, next) {
     auth.verifyToken(req, res, function (result) {
