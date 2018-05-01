@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const router = require('./routes/router.js');
 
@@ -33,6 +34,14 @@ app.use(function (err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
     res.render('error');
+});
+
+const key = fs.readFileSync(path.join(__dirname, 'auth/private.key'));
+const cert = fs.readFileSync(path.join(__dirname, 'auth/server.crt'));
+
+app.set('sslOptions', {
+    key: key,
+    cert: cert
 });
 
 module.exports = app;
